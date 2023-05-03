@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EcommerceApp.Application\EcommerceApp.Application.csproj" />
+    <ProjectReference Include="..\EcommerceApp.Core\EcommerceApp.Domain.csproj" />
+    <ProjectReference Include="..\EcommerceApp.Infrastructure\EcommerceApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\EcommerceApp.Shared\EcommerceApp.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="D:\Projects\EcommerceApp\EcommerceApp.Api\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="D:\Projects\EcommerceApp\EcommerceApp.Api\.editorconfig" />
+  </ItemGroup>
+
+</Project>
