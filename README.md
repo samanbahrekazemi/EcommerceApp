@@ -1,5 +1,5 @@
 
-# ***E-commerce App Using ASP.NET Core , CQRS , MediatR***
+# **E-commerce App Using ASP.NET Core , CQRS , MediatR**
 
 This project is an in-progress web application developed using ASP.NET Core. It utilizes MediatR, CQRS, EF (Entity Framework), SQL, and other technologies to provide users with an intuitive and responsive user interface.
 
