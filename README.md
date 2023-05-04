@@ -11,6 +11,8 @@ Before you can install and run this project, you must have the following softwar
 - [Visual Studio](https://visualstudio.microsoft.com/downloads/) 
 - [.NET Core 6 SDK](https://dotnet.microsoft.com/en-us/download)
 - [.SQL Server or SQL Server Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+- [MediatR](https://www.nuget.org/packages/MediatR)
+- [Fluent Validation](https://docs.fluentvalidation.net/en/latest/)
 
 
 
