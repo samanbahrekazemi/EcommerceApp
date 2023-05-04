@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EcommerceApp.Application.Features.Product.Commands;
 using EcommerceApp.Domain.Entities;
 using EcommerceApp.Shared.DTOs;
 
@@ -12,7 +13,6 @@ namespace EcommerceApp.Application.Mappings
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.Value))
                 .ForMember(src => src.CategoryId, opt => opt.MapFrom(x => x.CategoryId.Value))
                 .ReverseMap();
-
             CreateMap<Category, CategoryDto>().ReverseMap();
         }
     }

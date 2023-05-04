@@ -22,7 +22,7 @@ namespace EcommerceApp.Infrastructure.Persistence.Repositories
             return _dbSet.AsQueryable();
         }
 
-        public async Task<TEntity> GetByIdAsync(TId id)
+        public async Task<TEntity> FindAsync(TId id)
         {
             return await _dbSet.FindAsync(id);
         }

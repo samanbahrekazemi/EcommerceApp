@@ -1,4 +1,5 @@
-﻿using EcommerceApp.Application.Features.Product.Commands;
+﻿using AutoMapper;
+using EcommerceApp.Application.Features.Product.Commands;
 using EcommerceApp.Application.Features.Product.Queries;
 using EcommerceApp.Shared.DTOs;
 using MediatR;
@@ -12,9 +13,11 @@ namespace EcommerceApp.Api.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public ProductsController(IMediator mediator)
+        private readonly IMapper _mapper;
+        public ProductsController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
+            _mapper = mapper;
         }
 
 
@@ -33,20 +36,46 @@ namespace EcommerceApp.Api.Controllers
         }
 
 
-
         [HttpPost("Create")]
-        public async Task<IActionResult> CreateProduct(ProductDto productDto)
+        public async Task<IActionResult> CreateProduct([FromForm] ProductDto productDto)
         {
             var command = new CreateProductCommand
             {
-                Name = productDto.Name,
-                Description = productDto.Description,
-                Price = productDto.Price,
-                CategoryId = productDto.CategoryId,
+                ProductDto = productDto
             };
             var result = await _mediator.Send(command);
             return Ok(result);
 
+        }
+
+
+        [HttpPut("Edit/{id}")]
+        public async Task<IActionResult> EditProduct(int id, [FromForm] ProductDto productDto)
+        {
+            var command = new UpdateProductCommand
+            {
+                Id = id,
+                ProductDto = productDto
+            };
+            var result = await _mediator.Send(command);
+            if (result.Succeeded)
+                return Ok(result);
+            else
+                return Problem(result.Message);
+
+        }
+
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            var command = new DeleteProductCommand { Id = id };
+            var result = await _mediator.Send(command);
+            if (result.Succeeded)
+                return NoContent();
+            else
+                return Problem(result.Message);
         }
 
     }

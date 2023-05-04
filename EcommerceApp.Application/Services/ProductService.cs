@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using EcommerceApp.Domain.Entities;
+using EcommerceApp.Domain.Exceptions;
 using EcommerceApp.Domain.Interfaces;
 using EcommerceApp.Domain.ValueObjects;
 using EcommerceApp.Shared.DTOs;
+using EcommerceApp.Shared.Models;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using X.PagedList;
@@ -15,7 +18,7 @@ namespace EcommerceApp.Application.Services
         private readonly IRepository<Product, ProductId> _repository;
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
-        ILogger<ProductService> _logger;
+        private readonly ILogger<ProductService> _logger;
         public ProductService(IRepository<Product, ProductId> repository, IMapper mapper, ILogger<ProductService> logger, IProductRepository productRepository)
         {
             _repository = repository;
@@ -24,17 +27,20 @@ namespace EcommerceApp.Application.Services
             _productRepository = productRepository;
         }
 
-        public async Task<bool> AddAsync(ProductDto productDto)
+      
+        public async Task<Result<ProductDto?>> FindAsync(int id)
         {
             try
             {
-                await _repository.AddAsync(_mapper.Map<Product>(productDto));
-                return true;
+                var entity = await _repository.FindAsync(id);
+                if (entity != null)
+                    return Result<ProductDto?>.Success();
+                throw new EntityNotFoundException();
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return true;
+                return Result<ProductDto?>.Failure(ex.Message, null);
             }
         }
 
@@ -79,6 +85,53 @@ namespace EcommerceApp.Application.Services
             return await productsQuery.ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
                 .ToPagedListAsync(pageNumber, pageSize, totalItems);
 
+        }
+
+        public async Task<Result<ProductDto?>> UpdateAsync(ProductDto productDto)
+        {
+            try
+            {
+                var entity = await _repository.FindAsync(productDto.Id);
+                if (entity == null) throw new EntityNotFoundException();
+                await _repository.UpdateAsync(_mapper.Map<Product>(productDto));
+                return Result<ProductDto?>.Success();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return Result<ProductDto?>.Failure(ex.Message, null);
+            }
+        }
+
+        public async Task<Result<ProductDto?>> AddAsync(ProductDto productDto)
+        {
+            try
+            {
+                await _repository.AddAsync(_mapper.Map<Product>(productDto));
+                return Result<ProductDto?>.Success();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return Result<ProductDto?>.Failure(ex.Message, null);
+            }
+        }
+
+        public async Task<Result<ProductDto?>> DeleteAsync(int id)
+        {
+            try
+            {
+                var entity = await _repository.FindAsync(id);
+                if (entity == null) throw new EntityNotFoundException();
+                await _repository.DeleteAsync(id);
+                return Result<ProductDto?>.Success();
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return Result<ProductDto?>.Failure(ex.Message, null);
+            }
         }
     }
 }
