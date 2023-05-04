@@ -2,6 +2,7 @@
 using EcommerceApp.Application.Features.Product.Commands;
 using EcommerceApp.Application.Features.Product.Queries;
 using EcommerceApp.Shared.DTOs;
+using EcommerceApp.Shared.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using X.PagedList;
@@ -13,11 +14,9 @@ namespace EcommerceApp.Api.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
-        public ProductsController(IMediator mediator, IMapper mapper)
+        public ProductsController(IMediator mediator)
         {
             _mediator = mediator;
-            _mapper = mapper;
         }
 
 
@@ -28,11 +27,19 @@ namespace EcommerceApp.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("search")]
+        [HttpGet("Search")]
         public async Task<ActionResult<IPagedList<ProductDto>>> SearchProducts([FromQuery] SearchProductsQuery query)
         {
             var result = await _mediator.Send(query);
             return Ok(result);
+        }
+
+        private IActionResult Result(Result<ProductDto?> result)
+        {
+            if (result.Succeeded)
+                return Ok(result);
+            else
+                return Problem(result.Message);
         }
 
 
@@ -44,8 +51,7 @@ namespace EcommerceApp.Api.Controllers
                 ProductDto = productDto
             };
             var result = await _mediator.Send(command);
-            return Ok(result);
-
+            return Result(result);
         }
 
 
@@ -58,24 +64,16 @@ namespace EcommerceApp.Api.Controllers
                 ProductDto = productDto
             };
             var result = await _mediator.Send(command);
-            if (result.Succeeded)
-                return Ok(result);
-            else
-                return Problem(result.Message);
-
+            return Result(result);
         }
 
 
-
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var command = new DeleteProductCommand { Id = id };
             var result = await _mediator.Send(command);
-            if (result.Succeeded)
-                return NoContent();
-            else
-                return Problem(result.Message);
+            return Result(result);
         }
 
     }

@@ -1,16 +1,16 @@
 ﻿namespace EcommerceApp.Domain.Exceptions
 {
-    public class EntityNotFoundException : Exception
+    public class NotFoundEntityException : Exception
     {
         private readonly string defaultMessage;
 
         public override string Message => defaultMessage;
 
-        public EntityNotFoundException() : this("Entity not found!")
+        public NotFoundEntityException() : this("Entity not found!")
         {
         }
 
-        public EntityNotFoundException(string message)
+        public NotFoundEntityException(string message)
         {
             defaultMessage = message;
         }

@@ -1,14 +1,13 @@
-﻿using EcommerceApp.Application.Features.Product.Commands;
+﻿using EcommerceApp.Shared.DTOs;
 using FluentValidation;
 
 namespace EcommerceApp.Application.Features.Product.Validators
 {
-    public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
+    public class ProductDtoValidator : AbstractValidator<ProductDto>
     {
-        public CreateProductCommandValidator()
+        public ProductDtoValidator()
         {
             RuleFor(x => x.Name).NotEmpty();
-            //RuleFor(x => x.Description).NotEmpty();
             RuleFor(x => x.Price).GreaterThan(0);
             RuleFor(x => x.CategoryId).NotEmpty();
         }

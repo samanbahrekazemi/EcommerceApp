@@ -35,12 +35,12 @@ namespace EcommerceApp.Application.Services
                 var entity = await _repository.FindAsync(id);
                 if (entity != null)
                     return Result<ProductDto?>.Success();
-                throw new EntityNotFoundException();
+                throw new NotFoundEntityException();
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return Result<ProductDto?>.Failure(ex.Message, null);
+                return Result<ProductDto?>.Failure(ex.Message);
             }
         }
 
@@ -92,14 +92,14 @@ namespace EcommerceApp.Application.Services
             try
             {
                 var entity = await _repository.FindAsync(productDto.Id);
-                if (entity == null) throw new EntityNotFoundException();
+                if (entity == null) throw new NotFoundEntityException();
                 await _repository.UpdateAsync(_mapper.Map<Product>(productDto));
                 return Result<ProductDto?>.Success();
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return Result<ProductDto?>.Failure(ex.Message, null);
+                return Result<ProductDto?>.Failure(ex.Message);
             }
         }
 
@@ -113,7 +113,7 @@ namespace EcommerceApp.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return Result<ProductDto?>.Failure(ex.Message, null);
+                return Result<ProductDto?>.Failure(ex.Message);
             }
         }
 
@@ -122,7 +122,7 @@ namespace EcommerceApp.Application.Services
             try
             {
                 var entity = await _repository.FindAsync(id);
-                if (entity == null) throw new EntityNotFoundException();
+                if (entity == null) throw new NotFoundEntityException();
                 await _repository.DeleteAsync(id);
                 return Result<ProductDto?>.Success();
             }
@@ -130,7 +130,7 @@ namespace EcommerceApp.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return Result<ProductDto?>.Failure(ex.Message, null);
+                return Result<ProductDto?>.Failure(ex.Message);
             }
         }
     }
