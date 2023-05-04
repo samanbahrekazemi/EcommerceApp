@@ -1,8 +1,6 @@
 using EcommerceApp.Infrastructure;
 using EcommerceApp.Application;
 using EcommerceApp.Infrastructure.Persistence.Data;
-using Microsoft.Extensions.DependencyInjection;
-using EcommerceApp.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,10 +32,7 @@ using (var scope = app.Services.CreateScope())
 
     // Apply any pending migrations
     if (context.Database.IsSqlServer())
-    {
         await context.Database.MigrateAsync();
-
-    }
 
     await ApplicationDbContextSeed.SeedSampleDataAsync(context);
 }
