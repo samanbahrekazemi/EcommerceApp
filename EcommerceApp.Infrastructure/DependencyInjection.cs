@@ -1,6 +1,7 @@
 ﻿using EcommerceApp.Domain.Entities;
 using EcommerceApp.Domain.Interfaces;
 using EcommerceApp.Domain.ValueObjects;
+using EcommerceApp.Infrastructure.Events;
 using EcommerceApp.Infrastructure.Persistence.Data;
 using EcommerceApp.Infrastructure.Persistence.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -59,6 +60,7 @@ namespace EcommerceApp.Infrastructure
 
             //Generic Repository
             services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+            services.AddScoped<IEventHandler, Events.EventHandler>();
 
             //Repositories
             services.AddScoped<IProductRepository, ProductRepository>();

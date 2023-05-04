@@ -14,9 +14,12 @@ namespace EcommerceApp.Api.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public ProductsController(IMediator mediator)
+        private readonly IMapper _mapper;
+
+        public ProductsController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
+            _mapper = mapper;
         }
 
 
@@ -36,21 +39,22 @@ namespace EcommerceApp.Api.Controllers
 
         private IActionResult Result(Result<ProductDto?> result)
         {
-            if (result.Succeeded)
-                return Ok(result);
-            else
-                return Problem(result.Message);
+            if (result != null)
+            {
+                if (result.Succeeded)
+                    return Ok(result);
+                else
+                    return Problem(result.Message);
+            }
+
+            return Problem();
         }
 
 
         [HttpPost("Create")]
-        public async Task<IActionResult> CreateProduct([FromForm] ProductDto productDto)
+        public async Task<IActionResult> CreateProduct([FromForm] CreateProductCommand request)
         {
-            var command = new CreateProductCommand
-            {
-                ProductDto = productDto
-            };
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(request);
             return Result(result);
         }
 
@@ -71,7 +75,7 @@ namespace EcommerceApp.Api.Controllers
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            var command = new DeleteProductCommand { Id = id };
+            var command = new DeleteProductCommand(id);
             var result = await _mediator.Send(command);
             return Result(result);
         }

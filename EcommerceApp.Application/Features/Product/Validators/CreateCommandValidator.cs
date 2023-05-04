@@ -7,7 +7,7 @@ namespace EcommerceApp.Application.Features.Product.Validators
     {
         public CreateCommandValidator(ProductDtoValidator productDtoValidator)
         {
-            RuleFor(x => x.ProductDto).SetValidator(new ProductDtoValidator());
+            RuleFor(x => x).SetValidator(new ProductDtoValidator());
         }
     }
 }
