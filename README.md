@@ -20,7 +20,7 @@ To install and run the project locally with in-memory storage, follow these step
 
 Clone the repository to your local machine.
 Open the project in Visual Studio.
-In the appsettings.json file, set **"UseInMemoryDatabase"** to **true**.
+In the `appsettings.json` file, set **"UseInMemoryDatabase"** to **true**.
 Build the solution in Visual Studio.
 Run the project using Visual Studio's built-in web server or deploy it to a web server of your choice.
 Access the application using a web browser.
